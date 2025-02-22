@@ -7,7 +7,7 @@ def load_data():
     try:
         return pd.read_csv("data/records.csv")
     except FileNotFoundError:
-        return pd.DataFrame(columns=["Name", "Phone", "Profession", "Address", "Nationality", "Permit Expiry", "Status"])
+        return pd.DataFrame(columns=["Name", "Phone", "USCIS Number", "Profession", "Address", "Nationality", "Permit Expiry", "Status"])
 
 def save_data(df):
     df.to_csv("data/records.csv", index=False)
@@ -18,6 +18,12 @@ def add_record(df):
     if not validate_phone_number(phone):
         print("Invalid phone number!")
         return
+
+    uscis_number = input("Enter USCIS Number: ")
+    if not validate_uscis_number(uscis_number):
+        print("Invalid USCIS Number! Must be exactly 9 digits.")
+        return df
+        
     profession = input("Enter profession: ")
     address = input("Enter address: ")
     if not verify_address(address):
@@ -25,11 +31,23 @@ def add_record(df):
         return
     nationality = input("Enter nationality: ")
     permit_expiry = input("Enter permit expiry (YYYY-MM-DD): ")
+    
     status = input("Enter status (Permanent/Temporary/Expired/Illegal): ")
-    new_record = pd.DataFrame([{
-        "Name": name, "Phone": phone, "Profession": profession, "Address": address,
-        "Nationality": nationality, "Permit Expiry": permit_expiry, "Status": status
+     if not validate_status(status):
+        print("Invalid status! Choose from Permanent, Temporary, Expired, or Illegal.")
+        return df
+
+      new_record = pd.DataFrame([{
+        "Name": name, 
+        "Phone": phone,
+        "USCIS Number": uscis_number,
+        "Profession": profession, 
+        "Address": address,
+        "Nationality": nationality, 
+        "Permit Expiry": permit_expiry, 
+        "Status": status
     }])
+
     return pd.concat([df, new_record], ignore_index=True)
 
 def search_by_phone(df, phone):
