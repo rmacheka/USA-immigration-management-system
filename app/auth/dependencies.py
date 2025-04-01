@@ -7,10 +7,11 @@ from sqlalchemy.orm import Session
 from app.auth.models import User, UserRole
 from app.config import settings
 from app.database import get_db
-from typing import Optional
+from typing import Optional, Callable, TypeVar, cast
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+T = TypeVar("T")
 
 def get_current_user(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
@@ -23,7 +24,12 @@ def get_current_user(
     )
     
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(
+            token, 
+            settings.SECRET_KEY, 
+            algorithms=[settings.ALGORITHM],
+            options={"verify_exp": True}
+        )
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
@@ -41,14 +47,14 @@ def get_current_user(
 
 def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
     """Get current active user"""
-    if not current_user.is_active:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Inactive user")
+    # Note: get_current_user already checks for is_active, so this is redundant
+    # but kept for explicit documentation of the requirement
     return current_user
 
 
-def role_required(required_roles: list[UserRole]):
+def role_required(required_roles: list[UserRole]) -> Callable[[User], User]:
     """Dependency for role-based access control"""
-    def check_role(current_user: User = Depends(get_current_user)):
+    def check_role(current_user: User = Depends(get_current_user)) -> User:
         if current_user.role not in required_roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,

@@ -1,5 +1,5 @@
 # auth/models.py - User authentication models
-from sqlalchemy import Column, Integer, String, Boolean, Enum, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, Enum, ForeignKey, Date
 from sqlalchemy.orm import relationship
 from app.database import Base
 import enum

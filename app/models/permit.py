@@ -1,40 +1,38 @@
 # models/permit.py - Permit model
-from sqlalchemy import Column, Integer, String, Date, Enum, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean
 from sqlalchemy.orm import relationship
-from app.database import Base
+from datetime import datetime
 import enum
+from app.database import Base
 
 
-class PermitType(enum.Enum):
-    TOURIST_VISA = "tourist_visa"
-    WORK_VISA = "work_visa"
-    STUDENT_VISA = "student_visa"
-    PERMANENT_RESIDENCE = "permanent_residence"
-    CITIZENSHIP = "citizenship"
-    ASYLUM = "asylum"
+class PermitType(str, enum.Enum):
+    WORK = "work"
+    STUDENT = "student"
+    TOURIST = "tourist"
+    BUSINESS = "business"
+    PERMANENT = "permanent"
 
 
-class PermitStatus(enum.Enum):
+class PermitStatus(str, enum.Enum):
     ACTIVE = "active"
     EXPIRED = "expired"
     REVOKED = "revoked"
-    PENDING_ACTIVATION = "pending_activation"
+    PENDING = "pending"
 
 
 class Permit(Base):
     __tablename__ = "permits"
 
     id = Column(Integer, primary_key=True, index=True)
-    permit_number = Column(String, unique=True, index=True, nullable=False)
-    application_id = Column(Integer, ForeignKey("applications.id"), nullable=False)
-    type = Column(Enum(PermitType), nullable=False)
-    status = Column(Enum(PermitStatus), default=PermitStatus.PENDING_ACTIVATION)
-    issue_date = Column(Date, nullable=False)
-    expiry_date = Column(Date, nullable=False)
+    application_id = Column(Integer, ForeignKey("applications.id"))
+    permit_type = Column(Enum(PermitType))
+    issue_date = Column(DateTime)
+    expiry_date = Column(DateTime)
     is_renewable = Column(Boolean, default=False)
-    renewal_reminder_sent = Column(Boolean, default=False)
-    created_at = Column(Date, server_default="now()")
-    updated_at = Column(Date, server_default="now()", onupdate="now()")
+    status = Column(Enum(PermitStatus), default=PermitStatus.PENDING)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Relationships
     application = relationship("Application", back_populates="permit")
