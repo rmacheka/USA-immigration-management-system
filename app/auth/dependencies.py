@@ -1,12 +1,22 @@
+import sys
+from pathlib import Path
+
+# Add the project root to Python's path
+project_root = Path(__file__).resolve().parent.parent.parent  # Adjust based on your structure
+sys.path.append(str(project_root))
+
+# Now proceed with your imports
+from app.auth.models import User, UserRole
+from app.config import settings
+from app.database import get_db
+
 # auth/dependencies.py - Authentication dependencies
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt import PyJWTError
 import jwt
 from sqlalchemy.orm import Session
-from app.auth.models import User, UserRole
-from app.config import settings
-from app.database import get_db
+
 from typing import Optional, Callable, TypeVar, cast
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

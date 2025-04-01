@@ -1,6 +1,16 @@
+import sys
+from pathlib import Path
+
+# Add the project root to Python's path
+project_root = Path(__file__).resolve().parent.parent.parent
+sys.path.append(str(project_root))
+
+# Now import
+from app.models.permit import PermitStatus, PermitType
+
 from pydantic import BaseModel
 from datetime import datetime
-from app.models.permit import PermitStatus, PermitType
+#from app.models.permit import PermitStatus, PermitType
 
 class PermitBase(BaseModel):
     application_id: int
@@ -19,4 +29,4 @@ class Permit(PermitBase):
     updated_at: datetime
 
     class Config:
-        from_attributes = True 
+        from_attributes = True
