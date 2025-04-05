@@ -1,0 +1,91 @@
+<!-- Advanced Search Component -->
+<div class="advanced-search-container">
+    <h2>Advanced Search</h2>
+    <form id="advancedSearchForm" class="advanced-search-form">
+        <!-- Basic Search -->
+        <div class="search-section">
+            <div class="search-group">
+                <input type="text" id="searchQuery" placeholder="Search by name, ID, or keyword...">
+                <button type="button" class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <h3>Filters</h3>
+            <div class="filters-grid">
+                <!-- Application Type -->
+                <div class="filter-group">
+                    <label for="applicationType">Application Type</label>
+                    <select id="applicationType" multiple>
+                        <option value="work">Work Visa</option>
+                        <option value="student">Student Visa</option>
+                        <option value="tourist">Tourist Visa</option>
+                        <option value="family">Family Visa</option>
+                    </select>
+                </div>
+
+                <!-- Status -->
+                <div class="filter-group">
+                    <label for="status">Status</label>
+                    <select id="status" multiple>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="in_review">In Review</option>
+                    </select>
+                </div>
+
+                <!-- Date Range -->
+                <div class="filter-group">
+                    <label>Date Range</label>
+                    <div class="date-range">
+                        <input type="date" id="startDate" placeholder="Start Date">
+                        <span>to</span>
+                        <input type="date" id="endDate" placeholder="End Date">
+                    </div>
+                </div>
+
+                <!-- Country -->
+                <div class="filter-group">
+                    <label for="country">Country</label>
+                    <select id="country">
+                        <option value="">All Countries</option>
+                        <!-- Countries will be populated dynamically -->
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search History -->
+        <div class="search-history">
+            <h3>Recent Searches</h3>
+            <div class="history-list">
+                <!-- Search history will be populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Search Actions -->
+        <div class="search-actions">
+            <button type="button" class="btn-secondary" id="clearFilters">Clear Filters</button>
+            <button type="submit" class="btn-primary">Search</button>
+        </div>
+    </form>
+
+    <!-- Search Results -->
+    <div class="search-results">
+        <div class="results-header">
+            <h3>Search Results</h3>
+            <div class="results-actions">
+                <button class="btn-secondary" id="exportResults">Export Results</button>
+                <button class="btn-secondary" id="printResults">Print Results</button>
+            </div>
+        </div>
+        <div class="results-table">
+            <!-- Results will be populated dynamically -->
+        </div>
+        <div class="pagination">
+            <!-- Pagination will be added dynamically -->
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USA Immigration Management System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>IMMS</h1>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="#dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#applications"><i class="fas fa-file-alt"></i> Applications</a></li>
+                <li><a href="#search"><i class="fas fa-search"></i> Search</a></li>
+                <li><a href="#reports"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation Bar -->
+            <header class="top-bar">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-info">
+                    <span class="notification-badge">3</span>
+                    <i class="fas fa-bell"></i>
+                    <div class="user-profile">
+                        <img src="images/avatar.png" alt="User Avatar">
+                        <span>Emmanuel</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="content-area">
+                <div class="dashboard-grid">
+                    <!-- Statistics Cards -->
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Total Applications</h3>
+                        <p class="stat-number">1,234</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Pending Reviews</h3>
+                        <p class="stat-number">56</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Approved</h3>
+                        <p class="stat-number">890</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-times-circle"></i>
+                        <h3>Rejected</h3>
+                        <p class="stat-number">45</p>
+                    </div>
+
+                    <!-- Recent Applications Table -->
+                    <div class="table-container">
+                        <h2>Recent Applications</h2>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#12345</td>
+                                    <td>John Doe</td>
+                                    <td>Work Visa</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td>2024-04-05</td>
+                                    <td>
+                                        <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                </tr>
+                                <!-- More rows will be dynamically added -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <h2>Quick Actions</h2>
+                        <div class="action-buttons">
+                            <button class="action-btn primary"><i class="fas fa-plus"></i> New Application</button>
+                            <button class="action-btn secondary"><i class="fas fa-file-export"></i> Export Data</button>
+                            <button class="action-btn secondary"><i class="fas fa-print"></i> Print Report</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification System -->
+    <div class="notification-container">
+        <!-- Notifications will be dynamically added here -->
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 
