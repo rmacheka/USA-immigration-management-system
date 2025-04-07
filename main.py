@@ -155,23 +155,26 @@ def search_by_phone(phone: str) -> dict:
 
         print(f"\nSearching for phone number: {phone}")
         
-        # First check records.csv for basic information
+        # First check permits.csv for permit information
         try:
-            records_df = pd.read_csv("data/records.csv")
-            records_df['Phone'] = records_df['Phone'].astype(str).str.strip()
-            records_df['Phone'] = records_df['Phone'].apply(lambda x: '+' + x if not x.startswith('+') else x)
-            person = records_df[records_df["Phone"] == phone]
+            permits_df = pd.read_csv("data/permits.csv")
+            permits_df['Phone'] = permits_df['Phone'].astype(str).str.strip()
+            permits_df['Phone'] = permits_df['Phone'].apply(lambda x: '+' + x if not x.startswith('+') else x)
+            permit = permits_df[permits_df["Phone"] == phone]
             
-            if not person.empty:
-                p = person.iloc[0]
+            if not permit.empty:
+                p = permit.iloc[0]
                 print("\n=== Individual Details ===")
                 print(f"Name: {p['Name']}")
                 print(f"Phone: {p['Phone']}")
+                print(f"Passport Number: {p['Passport Number']}")
+                print(f"Permit Type: {p['Permit Type']}")
+                print(f"Status: {p['Status']}")
+                print(f"Issue Date: {p['Issue Date']}")
+                print(f"Expiry Date: {p['Expiry Date']}")
                 print(f"Nationality: {p['Nationality']}")
                 print(f"Profession: {p['Profession']}")
                 print(f"Address: {p['Address']}")
-                print(f"Permit Expiry: {p['Permit Expiry']}")
-                print(f"Status: {p['Status']}")
                 print("=" * 50)
                 
                 # Check applications.csv for application status
@@ -193,75 +196,31 @@ def search_by_phone(phone: str) -> dict:
                 except Exception as e:
                     print(f"\nNote: Could not access application details: {str(e)}")
                 
-                # Then check permits.csv for permit details
-                try:
-                    permits_df = pd.read_csv("data/permits.csv")
-                    permits_df['Phone'] = permits_df['Phone'].astype(str).str.strip()
-                    permit = permits_df[permits_df["Phone"] == phone]
-                    
-                    if not permit.empty:
-                        p_permit = permit.iloc[0]
-                        print("\n=== Permit Details ===")
-                        print(f"Permit Type: {p_permit['Permit Type']}")
-                        print(f"Passport Number: {p_permit['Passport Number']}")
-                        print(f"Issue Date: {p_permit['Issue Date']}")
-                        print(f"Expiry Date: {p_permit['Expiry Date']}")
-                        print(f"Status: {p_permit['Status']}")
-                        print(f"Nationality: {p_permit['Nationality']}")
-                        print(f"Profession: {p_permit['Profession']}")
-                        print(f"Address: {p_permit['Address']}")
-                        print("=" * 50)
-                    else:
-                        print("\nNote: No permit details found for this individual.")
-                except Exception as e:
-                    print(f"\nNote: Could not access permit details: {str(e)}")
-                
                 return {
                     "found": True,
                     "person": p.to_dict()
                 }
             else:
-                # If not found in records.csv, check permits.csv
+                # If not found in permits.csv, check applications.csv
                 try:
-                    permits_df = pd.read_csv("data/permits.csv")
-                    permits_df['Phone'] = permits_df['Phone'].astype(str).str.strip()
-                    permit = permits_df[permits_df["Phone"] == phone]
+                    applications_df = pd.read_csv("data/applications.csv")
+                    applications_df['Phone'] = applications_df['Phone'].astype(str).str.strip()
+                    applications_df['Phone'] = applications_df['Phone'].apply(lambda x: '+' + x if not x.startswith('+') else x)
+                    application = applications_df[applications_df["Phone"] == phone]
                     
-                    if not permit.empty:
-                        p_permit = permit.iloc[0]
-                        print("\n=== Individual Details (from Permits) ===")
-                        print(f"Name: {p_permit['Name']}")
-                        print(f"Phone: {p_permit['Phone']}")
-                        print(f"Nationality: {p_permit['Nationality']}")
-                        print(f"Profession: {p_permit['Profession']}")
-                        print(f"Address: {p_permit['Address']}")
-                        print(f"Passport Number: {p_permit['Passport Number']}")
-                        print(f"Permit Type: {p_permit['Permit Type']}")
-                        print(f"Issue Date: {p_permit['Issue Date']}")
-                        print(f"Expiry Date: {p_permit['Expiry Date']}")
-                        print(f"Status: {p_permit['Status']}")
+                    if not application.empty:
+                        app = application.iloc[0]
+                        print("\n=== Individual Details (from Applications) ===")
+                        print(f"Name: {app['Name']}")
+                        print(f"Phone: {app['Phone']}")
+                        print(f"Application Type: {app['Application Type']}")
+                        print(f"Submission Date: {app['Submission Date']}")
+                        print(f"Status: {app['Status']}")
                         print("=" * 50)
-                        
-                        # Check applications for this person
-                        try:
-                            applications_df = pd.read_csv("data/applications.csv")
-                            applications_df['Phone'] = applications_df['Phone'].astype(str).str.strip()
-                            applications_df['Phone'] = applications_df['Phone'].apply(lambda x: '+' + x if not x.startswith('+') else x)
-                            application = applications_df[applications_df["Phone"] == phone]
-                            
-                            if not application.empty:
-                                app = application.iloc[0]
-                                print("\n=== Application Status ===")
-                                print(f"Application Type: {app['Application Type']}")
-                                print(f"Submission Date: {app['Submission Date']}")
-                                print(f"Status: {app['Status']}")
-                                print("=" * 50)
-                        except Exception as e:
-                            print(f"\nNote: Could not access application details: {str(e)}")
                         
                         return {
                             "found": True,
-                            "person": p_permit.to_dict()
+                            "person": app.to_dict()
                         }
                     else:
                         print(f"\nNo records found with phone number: {phone}")
@@ -270,16 +229,16 @@ def search_by_phone(phone: str) -> dict:
                             "message": f"No records found with phone number: {phone}"
                         }
                 except Exception as e:
-                    print(f"Error reading permits.csv: {str(e)}")
+                    print(f"Error reading applications.csv: {str(e)}")
                     return {
                         "found": False,
-                        "message": f"Error reading permits: {str(e)}"
+                        "message": f"Error reading applications: {str(e)}"
                     }
         except Exception as e:
-            print(f"Error reading records.csv: {str(e)}")
+            print(f"Error reading permits.csv: {str(e)}")
             return {
                 "found": False,
-                "message": f"Error reading records: {str(e)}"
+                "message": f"Error reading permits: {str(e)}"
             }
     except Exception as e:
         print(f"Error in search_by_phone: {str(e)}")
