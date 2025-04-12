@@ -1,13 +1,65 @@
+# USA Immigration Management System - Backend
+
+## Table of Contents
+1. [Setup Instructions](#setup-instructions)
+2. [Architecture Overview](#architecture-overview)
+3. [API Documentation](#api-documentation)
+4. [Testing Instructions](#testing-instructions)
+5. [Deployment](#deployment)
+
+## Setup Instructions
+
+### Prerequisites
+- Python 3.9+
+- PostgreSQL 12+
+- Redis (for caching and background tasks)
+- Node.js (for API documentation generation)
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/your-repo/immigration-backend.git
+cd immigration-backend
+
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your configuration
 
 
+Database Setup
+# Create database (ensure PostgreSQL is running)
+createdb immigration_system
+# Run migrations
+flask db upgrade
+
+Running the Application
+# Development mode
+flask run --debug
+# Production mode (using Gunicorn)
+gunicorn -w 4 -b :5000 wsgi:app
 
 
-
-
-
-
-
-
+Architecture Overview
+Core Components
+Copy
+backend/
+├── app/
+│   ├── api/               # API endpoints and routes
+│   ├── models/            # Database models
+│   ├── services/          # Business logic
+│   ├── utils/             # Helper functions
+│   ├── __init__.py        # Application factory
+│   └── config.py          # Configuration settings
+├── tests/                 # Unit and integration tests
+├── migrations/            # Database migration scripts
+└── requirements.txt       # Dependencies
 
 
 1. Core Business Logic Implementation
@@ -157,3 +209,24 @@ Status (Permanent/Temporary/Expired/Illegal)
 
 2. Updated SQLAlchemy Models
 File: app/models/applicant.py
+
+
+
+Key Technologies
+Flask: Web framework
+
+SQLAlchemy: ORM for database operations
+
+Flask-RESTful: API resource management
+
+JWT: Authentication system
+
+Celery: Background task processing
+
+Alembic: Database migrations
+
+API Documentation
+Interactive Documentation
+Swagger UI: http://localhost:5000/api/docs
+
+Redoc: http://localhost:5000/api/redoc

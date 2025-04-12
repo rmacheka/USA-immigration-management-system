@@ -1,57 +1,51 @@
 from flask_restful import Resource, reqparse
-from werkzeug.utils import secure_filename
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.models import Application, Document
 from app.services import ApplicationService
-from app.utils.file_processing import save_uploaded_file
+from app.utils import save_uploaded_file
 
-class ApplicationAPI(Resource):
-    def __init__(self):
-        self.parser = reqparse.RequestParser()
-        self._init_parser()
+class ApplicationListResource(Resource):
+    @jwt_required()
+    def get(self):
+        """Get all applications"""
+        return ApplicationService.get_all_applications(get_jwt_identity())
 
-    def _init_parser(self):
-        self.parser.add_argument('first_name', type=str, required=True)
-        self.parser.add_argument('last_name', type=str, required=True)
-        self.parser.add_argument('dob', type=str, required=True)
-        self.parser.add_argument('gender', type=str)
-        self.parser.add_argument('email', type=str, required=True)
-        self.parser.add_argument('phone', type=str, required=True)
-        self.parser.add_argument('address', type=str, required=True)
-        self.parser.add_argument('country', type=str, required=True)
-        self.parser.add_argument('visa_type', type=str, required=True)
-        self.parser.add_argument('purpose', type=str, required=True)
-        self.parser.add_argument('duration', type=int, required=True)
-        self.parser.add_argument('passport', type=str, required=True)
-        self.parser.add_argument('photo', type=str, required=True)
-        self.parser.add_argument('additional_docs', type=list, location='json')
-
+    @jwt_required()
     def post(self):
-        """Submit new application"""
-        args = self.parser.parse_args()
-        
+        """Create new application"""
+        parser = reqparse.RequestParser()
+        parser.add_argument('first_name', type=str, required=True)
+        parser.add_argument('last_name', type=str, required=True)
+        # Add all other fields...
+        args = parser.parse_args()
+
         try:
-            # Process file uploads
-            passport_path = save_uploaded_file(args['passport'], 'passports')
-            photo_path = save_uploaded_file(args['photo'], 'photos')
+            # Handle file uploads
+            passport = request.files['passport']
+            photo = request.files['photo']
+            
+            passport_path = save_uploaded_file(passport, 'passports')
+            photo_path = save_uploaded_file(photo, 'photos')
             
             # Create application
             application = ApplicationService.create_application(
+                user_id=get_jwt_identity(),
                 first_name=args['first_name'],
                 last_name=args['last_name'],
-                dob=args['dob'],
-                gender=args['gender'],
-                email=args['email'],
-                phone=args['phone'],
-                address=args['address'],
-                country=args['country'],
-                visa_type=args['visa_type'],
-                purpose=args['purpose'],
-                duration=args['duration'],
+                # Include all other fields...
                 passport_path=passport_path,
-                photo_path=photo_path,
-                additional_docs=args['additional_docs']
+                photo_path=photo_path
             )
             
-            return {'message': 'Application submitted', 'id': application.id}, 201
-        
+            return {'message': 'Application created', 'id': application.id}, 201
         except Exception as e:
             return {'error': str(e)}, 400
+
+class ApplicationResource(Resource):
+    @jwt_required()
+    def get(self, application_id):
+        """Get application details"""
+        return ApplicationService.get_application(
+            application_id, 
+            get_jwt_identity()
+        )

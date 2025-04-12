@@ -4,7 +4,7 @@ from app.extensions import db
 
 @pytest.fixture
 def app():
-    app = create_app(config_class='app.config.TestConfig')
+    app = create_app(config_class='config.TestingConfig')
     with app.app_context():
         db.create_all()
         yield app

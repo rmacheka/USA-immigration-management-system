@@ -1,37 +1,36 @@
-from flask import request, jsonify
 from flask_restful import Resource
-from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
-from app.services.auth_service import AuthService
-from app.utils.logger import log
+from flask_jwt_extended import create_access_token, create_refresh_token
+from app.models import User
+from app.extensions import db
 
-class LoginAPI(Resource):
+class LoginResource(Resource):
     def post(self):
-        data = request.get_json()
-        username = data.get('username')
-        password = data.get('password')
-        
-        if not username or not password:
-            log.warning("Login attempt with missing credentials")
-            return {'message': 'Username and password required'}, 400
-        
-        auth_result = AuthService.authenticate(username, password)
-        if not auth_result:
-            return {'message': 'Invalid credentials'}, 401
-        
-        return jsonify(auth_result)
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', type=str, required=True)
+        parser.add_argument('password', type=str, required=True)
+        args = parser.parse_args()
 
-class RefreshTokenAPI(Resource):
+        user = User.query.filter_by(username=args['username']).first()
+        
+        if not user or not user.check_password(args['password']):
+            return {'error': 'Invalid credentials'}, 401
+            
+        access_token = create_access_token(identity=user.id)
+        refresh_token = create_refresh_token(identity=user.id)
+        
+        return {
+            'access_token': access_token,
+            'refresh_token': refresh_token,
+            'user': {
+                'id': user.id,
+                'username': user.username,
+                'role': user.role
+            }
+        }
+
+class RefreshResource(Resource):
     @jwt_required(refresh=True)
     def post(self):
         current_user = get_jwt_identity()
-        new_token = AuthService.refresh_token(current_user)
-        if not new_token:
-            return {'message': 'Invalid user'}, 401
-        
-        return jsonify(new_token)
-
-class ProtectedResource(Resource):
-    @jwt_required()
-    def get(self):
-        current_user = get_jwt_identity()
-        return {'message': f'Hello, user {current_user}'}, 200
+        new_token = create_access_token(identity=current_user)
+        return {'access_token': new_token}
