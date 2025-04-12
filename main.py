@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from typing import List, Optional
 import jwt
-from jwt import PyJWTError
 from passlib.context import CryptContext
 from app.database import get_db, engine, Base
 from app.auth.models import User, UserRole
@@ -49,6 +48,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+async def root():
+    return {
+        "message": "Welcome to USA Immigration Management System API",
+        "documentation": "/docs",
+        "version": "1.0.0"
+    }
 
 # Authentication routes
 @app.post("/token")
@@ -329,9 +336,11 @@ def main():
                     break
         elif choice == "3":
             while True:
-                report_type = input("Enter report type (applications/permits): ").lower()
+                report_type = input("Enter report type (applications/permits) or 'exit' to go back: ").lower()
+                if report_type == 'exit':
+                    break
                 if report_type not in ['applications', 'permits']:
-                    print("Invalid report type. Please enter 'applications' or 'permits'.")
+                    print("Invalid report type. Please enter 'applications', 'permits', or 'exit'.")
                     continue
 
                 # Validate start and end dates
