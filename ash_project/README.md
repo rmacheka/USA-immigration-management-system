@@ -7,6 +7,16 @@
 4. [Testing Instructions](#testing-instructions)
 5. [Deployment](#deployment)
 
+## Tools Used:
+
+Python (same version used in development)
+
+PostgreSQL/MySQL (or SQLite for quick testing)
+
+Postman/Insomnia (API testing)
+
+VS Code/PyCharm (IDE)
+
 ## Setup Instructions
 
 ### Prerequisites
@@ -230,3 +240,17 @@ Interactive Documentation
 Swagger UI: http://localhost:5000/api/docs
 
 Redoc: http://localhost:5000/api/redoc
+
+
+
+virtual environment 
+
+All dependencies listed in ash_project/requirement.txt have been successfully installed in the venv virtual environment.
+.\venv\Scripts\Activate.ps1 in PowerShell
+
+Locating the main Python file:
+Based on the file listing I saw earlier, there is a main.py file located directly in the root directory of your project (/c%3A/Users/Rue/OneDrive%20-%20Dallas%20Baptist%20University/Documents/GitHub/MSITM.6341/Project/USA-immigration-management-system)
+
+Getting the project on GitHub:
+It looks like you already have a Git repository initialized in your project directory (I see a .git folder). Let's check if a remote repository (like one on GitHub) is already configured.
+I'll run git remote -v to check.

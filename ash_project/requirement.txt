@@ -1,0 +1,34 @@
+# Flask Core & Extensions
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-JWT-Extended
+Flask-RESTful
+Flask-Cors
+Werkzeug
+
+# FastAPI Core
+fastapi
+uvicorn[standard]
+
+# Database
+SQLAlchemy
+
+# Auth & Security
+PyJWT
+passlib[bcrypt]
+
+# Data Handling
+pandas
+
+# Utilities
+python-dotenv
+APScheduler
+geopy
+pydantic-settings
+
+# Testing
+pytest
+
+# Packaging
+setuptools

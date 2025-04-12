@@ -1,3 +1,6 @@
+from .permit_processing import PermitProcessor
+from app.models import Application
+
 class ApplicationWorkflow:
     def __init__(self, db_session):
         self.db = db_session

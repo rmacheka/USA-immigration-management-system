@@ -1,5 +1,6 @@
 from flask import jsonify
 from werkzeug.http import HTTP_STATUS_CODES
+from werkzeug.exceptions import Forbidden
 
 def register_error_handlers(app):
     @app.errorhandler(400)
@@ -9,7 +10,7 @@ def register_error_handlers(app):
             'message': str(error.description) if hasattr(error, 'description') else 'Bad request'
         }), 400
     
-    @app.errorhandler(PermissionDeniedError)
+    @app.errorhandler(Forbidden)
     def handle_permission_denied(error):
         return jsonify({
             'error': 'Permission denied',

@@ -1,7 +1,21 @@
+#.\venv\Scripts\Activate.ps1
+
 # utils/permit_tracker.py
+import logging
 from apscheduler.schedulers.background import BackgroundScheduler
-from app.services import PermitService
+from ash_project.app.services import PermitService  # Absolute import
 from app.extensions import db
+
+
+def main():
+    service = PermitService()
+    service.check_expiring_permits()
+    service.expire_permits()
+
+if __name__ == "__main__":
+    main()
+
+logger = logging.getLogger(__name__)
 
 class PermitTracker:
     def __init__(self, app):
@@ -33,4 +47,4 @@ class PermitTracker:
             for permit in expired:
                 permit_service.update_status(permit.id, 'expired')
             
-            log.info(f"Processed {len(expired)} expired permits")
+            logger.info(f"Processed {len(expired)} expired permits")

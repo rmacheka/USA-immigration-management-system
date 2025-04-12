@@ -1,6 +1,9 @@
+#.\venv\Scripts\activate
+
 from datetime import datetime
 from app.models import Application, ApplicationStatus, Notification
 from app.extensions import db
+from .notification_services import NotificationService
 
 class ApplicationService:
     @staticmethod

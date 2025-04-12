@@ -1,3 +1,6 @@
+from app.models import Notification
+from app.extensions import db
+
 class NotificationService:
     @staticmethod
     def get_user_notifications(user_id, limit=5):

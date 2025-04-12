@@ -1,3 +1,4 @@
+#.\venv\Scripts\activate
 def test_applicant_model_matches_schema(db_session):
     # Verify all expected columns exist
     expected_columns = {

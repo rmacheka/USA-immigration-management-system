@@ -2,6 +2,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from app.models import Permit
 from app.extensions import db
 from datetime import datetime, timedelta
+from ..services.notification_services import NotificationService
 
 scheduler = BackgroundScheduler()
 

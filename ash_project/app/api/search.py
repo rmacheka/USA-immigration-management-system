@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from app.services import ApplicationService
 from app.utils import paginate
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 class AdvancedSearchAPI(Resource):
     def __init__(self):
