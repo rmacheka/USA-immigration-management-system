@@ -1,4 +1,6 @@
 from ..extensions import db
+# Import the association table defined in country.py
+from .country import visa_country_restrictions
 
 class VisaType(db.Model):
     __tablename__ = 'visa_types'
@@ -12,7 +14,7 @@ class VisaType(db.Model):
     
     # Relationships
     restricted_countries = db.relationship('Country',
-                                        secondary='visa_country_restrictions',
+                                        secondary=visa_country_restrictions,
                                         back_populates='visa_restrictions')
     
     def __repr__(self):

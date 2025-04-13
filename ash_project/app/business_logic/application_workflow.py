@@ -1,5 +1,5 @@
 from .permit_processing import PermitProcessor
-from app.models import Application
+from ash_project.app.models import Application
 
 class ApplicationWorkflow:
     def __init__(self, db_session):

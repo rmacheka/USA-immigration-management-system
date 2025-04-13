@@ -1,5 +1,11 @@
 from ..extensions import db
 
+# Define the association table for the many-to-many relationship
+visa_country_restrictions = db.Table('visa_country_restrictions',
+    db.Column('visa_type_id', db.Integer, db.ForeignKey('visa_types.visa_type_id'), primary_key=True),
+    db.Column('country_id', db.Integer, db.ForeignKey('countries.country_id'), primary_key=True)
+)
+
 class Country(db.Model):
     __tablename__ = 'countries'
     
@@ -10,7 +16,7 @@ class Country(db.Model):
     
     # Relationships
     visa_restrictions = db.relationship('VisaType', 
-                                     secondary='visa_country_restrictions',
+                                     secondary=visa_country_restrictions,
                                      back_populates='restricted_countries')
     
     def __repr__(self):

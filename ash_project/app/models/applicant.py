@@ -1,11 +1,12 @@
-from app.extensions import db
+from ash_project.app.extensions import db
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import validates
 
 class Applicant(db.Model):
-    __tablename__ = 'applicants'
+    __tablename__ = 'applicants'  # Critical table name match
     
-    id = Column(Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)  # Must exist
+
     name = Column(String(100), nullable=False)
     phone = Column(String(15), nullable=False)
     uscis_number = Column(String(9), unique=True, nullable=False)

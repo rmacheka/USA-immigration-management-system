@@ -7,11 +7,11 @@ from app.extensions import db
 @pytest.fixture
 def sample_user():
     user = User(
-        username='testuser',
+        username='postgres',
         email='test@example.com',
         role='staff'
     )
-    user.set_password('testpass')
+    user.set_password('AshLiam2025')
     return user
 
 @pytest.fixture

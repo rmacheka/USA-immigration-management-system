@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, String, Date, Enum as PyEnum, ForeignKey
 from enum import Enum
 from datetime import datetime
-from app.extensions import db
+from ash_project.app.extensions import db
 
 class PermitType(Enum):
     TOURIST = 'tourist'
@@ -20,6 +20,7 @@ class Permit(db.Model):
     __tablename__ = 'permits'
     
     id = Column(Integer, primary_key=True)
+    application_id = Column(Integer, ForeignKey('applications.id'), nullable=False)
     applicant_id = Column(Integer, ForeignKey('applicants.id'), nullable=False)
     permit_number = Column(String(50), unique=True, nullable=False)
     permit_type = Column(PyEnum(PermitType), nullable=False)

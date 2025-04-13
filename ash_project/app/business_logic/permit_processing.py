@@ -1,4 +1,4 @@
-from app.models import PermitType
+from ash_project.app.models import PermitType
 from datetime import timedelta
 
 # Define permit durations (example values)

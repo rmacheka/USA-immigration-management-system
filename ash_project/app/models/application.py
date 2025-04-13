@@ -1,6 +1,9 @@
 from datetime import datetime
 from enum import Enum
-from app.extensions import db
+# Use explicit absolute import from ash_project
+from ash_project.app.extensions import db
+#from .user import User
+
 
 class ApplicationStatus(Enum):
     PENDING = 'pending'
@@ -28,11 +31,20 @@ class Application(db.Model):
     status = db.Column(db.Enum(ApplicationStatus), 
                default=ApplicationStatus.PENDING,
                nullable=False)
+    # Foreign key for the applicant user
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    # Foreign key for the processing officer (can be null initially)
+    processing_officer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, 
                           onupdate=datetime.utcnow)
     
     # Relationships
+    #user = db.relationship('User', backref='applications')
+    user = db.relationship('User', backref='applications', foreign_keys=[user_id])
+    # Relationship to the applicant user
+    #user = db.relationship('User', foreign_keys=[user_id], backref=db.backref('applications', lazy=True))
+    # Relationship to the processing officer (established via backref in User model)
     documents = db.relationship('Document', backref='application', lazy=True)
     permits = db.relationship('Permit', backref='application', lazy=True)
     

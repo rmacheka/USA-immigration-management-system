@@ -1,15 +1,16 @@
 from flask import request
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.models import Application, Document
-from ..services import ApplicationService
-from app.utils import save_uploaded_file
+# Use explicit absolute imports from ash_project
+from ash_project.app.models import Application, Document
+#from ..services import ApplicationService # Keep ApplicationService commented for now
+from ash_project.app.utils import save_uploaded_file
 
 class ApplicationListResource(Resource):
     @jwt_required()
     def get(self):
         """Get all applications"""
-        return ApplicationService.get_all_applications(get_jwt_identity())
+    #    return ApplicationService.get_all_applications(get_jwt_identity())
 
     @jwt_required()
     def post(self):
