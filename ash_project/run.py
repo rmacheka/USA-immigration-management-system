@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv() 
 
 #from ash_project.app import create_app
-from app import create_app # Use relative import
+from ash_project.app import create_app # Use relative import
 
 # Create the Flask application instance
 app = create_app()
@@ -19,7 +19,7 @@ if __name__ == '__main__':
             debug=os.getenv('FLASK_DEBUG', True))"""
     
 # run.py
-from app import create_app
+from ash_project.app import create_app
 
 app = create_app()  # This line is critical
 
