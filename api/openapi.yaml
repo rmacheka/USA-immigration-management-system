@@ -1,0 +1,316 @@
+openapi: 3.0.0
+info:
+  title: USA Immigration Management System API
+  description: |
+    API for managing immigrant records, providing search, filtering, and statistical analysis.
+    Developed by Ade Solanke as part of the USA Immigration Management System.
+  version: 1.0.0
+  contact:
+    name: Ade Solanke
+    email: ade.solanke@example.com
+
+servers:
+  - url: http://localhost:5000/api
+    description: Development server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Checks if the API is operational
+      responses:
+        '200':
+          description: API is operational
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+                  timestamp:
+                    type: string
+                    format: date-time
+                  version:
+                    type: string
+                    example: 1.0.0
+
+  /immigrants:
+    get:
+      summary: Get all immigrants
+      description: Retrieves all immigrant records with optional filtering
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: Filter by immigration status
+        - in: query
+          name: country
+          schema:
+            type: string
+          description: Filter by country of origin
+      responses:
+        '200':
+          description: List of immigrant records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Immigrant'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Create a new immigrant record
+      description: Creates a new immigrant record in the system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImmigrantInput'
+      responses:
+        '201':
+          description: Immigrant created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Immigrant'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /immigrants/{immigrant_id}:
+    parameters:
+      - name: immigrant_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the immigrant
+    
+    get:
+      summary: Get immigrant by ID
+      description: Retrieves a specific immigrant record by ID
+      responses:
+        '200':
+          description: Immigrant record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Immigrant'
+        '404':
+          description: Immigrant not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update immigrant record
+      description: Updates an existing immigrant record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImmigrantInput'
+      responses:
+        '200':
+          description: Immigrant updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Immigrant'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Immigrant not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete immigrant record
+      description: Deletes an immigrant record
+      responses:
+        '200':
+          description: Immigrant deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Immigrant not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /statistics:
+    get:
+      summary: Get statistics
+      description: Retrieves statistical information about immigrants
+      responses:
+        '200':
+          description: Statistical information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_immigrants:
+                    type: integer
+                  by_status:
+                    type: object
+                    additionalProperties:
+                      type: integer
+                  by_country:
+                    type: object
+                    additionalProperties:
+                      type: integer
+                  recent_additions:
+                    type: integer
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+
+  schemas:
+    Immigrant:
+      type: object
+      properties:
+        ID:
+          type: string
+          example: IMM000001
+        FirstName:
+          type: string
+          example: John
+        LastName:
+          type: string
+          example: Doe
+        Status:
+          type: string
+          enum: [Permanent, Temporary, Expired, Illegal]
+          example: Permanent
+        Country:
+          type: string
+          example: Mexico
+        Address:
+          type: string
+          example: 123 Main St, Anytown, USA
+        Phone:
+          type: string
+          example: 123-456-7890
+        USCIS_Number:
+          type: string
+          example: 123456789
+        DateAdded:
+          type: string
+          format: date
+          example: 2023-04-15
+      required:
+        - ID
+        - FirstName
+        - LastName
+        - Status
+        - Country
+        - Address
+        - Phone
+        - DateAdded
+
+    ImmigrantInput:
+      type: object
+      properties:
+        FirstName:
+          type: string
+          example: John
+        LastName:
+          type: string
+          example: Doe
+        Status:
+          type: string
+          enum: [Permanent, Temporary, Expired, Illegal]
+          example: Permanent
+        Country:
+          type: string
+          example: Mexico
+        Address:
+          type: string
+          example: 123 Main St, Anytown, USA
+        Phone:
+          type: string
+          example: 123-456-7890
+        USCIS_Number:
+          type: string
+          example: 123456789
+      required:
+        - FirstName
+        - LastName
+        - Status
+        - Country
+        - Address
+        - Phone
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: An error occurred
+      required:
+        - error 
