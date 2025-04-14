@@ -11,5 +11,6 @@ with app.app_context():
         db.session.add(user)
         db.session.commit()
         print('Test user created')
+        
     else:
         print('User already exists')
