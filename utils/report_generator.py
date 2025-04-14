@@ -1,4 +1,12 @@
+"""
+USA Immigration Management System - Basic Report Generator
+Implemented by: RU (Backend Developer)
+This module provides basic functionality for generating text-based reports.
+Note: For advanced PDF report generation, see the API module implemented by Ade Solanke.
+"""
+
 def generate_report(df):
+    """Generate a basic text report from the data."""
     if 'Status' not in df.columns:
         print("Error: DataFrame does not contain 'Status' column.")
         return
