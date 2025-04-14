@@ -1,3 +1,9 @@
+"""
+USA Immigration Management System - Alternate Main Application
+Implemented by: RU (Backend Developer)
+This module provides an alternative implementation of the core business logic.
+"""
+
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
