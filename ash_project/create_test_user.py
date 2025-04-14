@@ -5,7 +5,8 @@ from ash_project.app.models.user import User
 app = create_app()
 with app.app_context():
     if not User.query.filter_by(username='postgres').first():
-        user = User(username='postgres')
+        #user = User(username='postgres')
+        user = User(username='postgres', email='postgres@example.com', role='admin')
         user.set_password('AshLiam2025')  # Ensure this method exists
         db.session.add(user)
         db.session.commit()

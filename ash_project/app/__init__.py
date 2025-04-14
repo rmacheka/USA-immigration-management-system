@@ -13,17 +13,24 @@ logging.basicConfig(level=logging.INFO)
 
 def create_app(config_class=None):
     app = Flask(__name__)
-    
+
     # Load config (keep your existing configuration code)
     load_dotenv()
     app.config.from_mapping(
         SQLALCHEMY_DATABASE_URI=f'postgresql://{os.getenv("POSTGRES_USER")}:{os.getenv("POSTGRES_PASSWORD")}@{os.getenv("POSTGRES_HOST")}/{os.getenv("POSTGRES_DB")}',
+        
+
+        #app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "my-super-secure-jwt-key")
+        # Add JWT configuration here
+        JWT_SECRET_KEY=os.getenv("JWT_SECRET_KEY", "my-super-secure-jwt-key"),
         # ... keep other configs ...
     )
 
     # Initialize extensions (keep your existing code)
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app)
+    cors.init_app(app)
+    jwt.init_app(app)
     # ... other extensions ...
 
     # Import models (NEW LOCATION - JUST IMPORTS, NO db.create_all())
