@@ -6,8 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "fastapi",
-        "PyJWT",
-        "python-jose[cryptography]",
+        "PyJWT[crypto]",
         "passlib[bcrypt]",
         "sqlalchemy",
     ],
