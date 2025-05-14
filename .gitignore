@@ -407,3 +407,14 @@ data/reports/
 # Files with spaces in names (potential duplicates)
 *" "*.*
 *" "*
+
+# Python package build artifacts
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
