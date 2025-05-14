@@ -1,0 +1,5 @@
+fastapi
+PyJWT
+python-jose[cryptography]
+passlib[bcrypt]
+sqlalchemy

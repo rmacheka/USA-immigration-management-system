@@ -1,5 +1,11 @@
+"""
+USA Immigration Management System - Main Application
+Implemented by: RU (Backend Developer)
+This module provides the core business logic and main application entry point.
+"""
+
 import pandas as pd
-from utils.data_validation import validate_phone_number
+from utils.data_validation import validate_phone_number, validate_uscis_number, validate_status
 from utils.geocoding import verify_address
 from utils.report_generator import generate_report
 
@@ -17,7 +23,7 @@ def add_record(df):
     phone = input("Enter phone number: ")
     if not validate_phone_number(phone):
         print("Invalid phone number!")
-        return
+        return df
 
     uscis_number = input("Enter USCIS Number: ")
     if not validate_uscis_number(uscis_number):
@@ -28,16 +34,17 @@ def add_record(df):
     address = input("Enter address: ")
     if not verify_address(address):
         print("Invalid address!")
-        return
+        return df
+        
     nationality = input("Enter nationality: ")
     permit_expiry = input("Enter permit expiry (YYYY-MM-DD): ")
     
     status = input("Enter status (Permanent/Temporary/Expired/Illegal): ")
-     if not validate_status(status):
+    if not validate_status(status):
         print("Invalid status! Choose from Permanent, Temporary, Expired, or Illegal.")
         return df
 
-      new_record = pd.DataFrame([{
+    new_record = pd.DataFrame([{
         "Name": name, 
         "Phone": phone,
         "USCIS Number": uscis_number,

@@ -396,3 +396,14 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Project-specific directories
+ash_project/venv/
+.venv/
+venv/
+data/visualizations/
+data/reports/
+
+# Files with spaces in names (potential duplicates)
+*" "*.*
+*" "*
